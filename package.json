@@ -1,6 +1,6 @@
 {
   "name": "react-redux",
-  "version": "0.1",
+  "version": "0.1.0",
   "description": "Starter package for Redux with React and Babel support",
   "main": "index.js",
   "repository": "git@github.com:nillion/react-redux.git",
