@@ -1,26 +1,56 @@
+const webpack = require('webpack');
+const HtmlWebPackPlugin = require('html-webpack-plugin');
+const path = require('path');
+
+const sourcePath = path.join(__dirname, 'src');
+
 module.exports = {
-  entry: [
-    './src/index.js'
-  ],
+  entry: {
+    app: path.resolve(sourcePath, 'index.js')
+  },
   output: {
-    path: __dirname,
-    publicPath: '/',
-    filename: 'bundle.js'
+    path: path.join(__dirname, 'dist'),
+    filename: '[name].[chunkhash].js',
+    publicPath: '/'
+  },
+  optimization: {
+    minimize: true
   },
   module: {
-    loaders: [{
-      exclude: /node_modules/,
-      loader: 'babel',
-      query: {
-        presets: ['react', 'es2015', 'stage-1']
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader"
+        }
+      },
+      {
+        test: /\.html$/,
+        use: [
+          {
+            loader: "html-loader"
+          }
+        ]
       }
-    }]
+    ]
   },
-  resolve: {
-    extensions: ['', '.js', '.jsx']
-  },
+  plugins: [
+    new HtmlWebPackPlugin({
+      template: "./index.html",
+      filename: "./index.html",
+      minify: {
+        collapseWhitespace: true,
+        collapseInlineTagWhitespace: true,
+        removeComments: true,
+        removeRedundantAttributes: true
+      }
+    }),
+    new webpack.HashedModuleIdsPlugin()
+  ],
   devServer: {
     historyApiFallback: true,
     contentBase: './'
   }
 };
+
